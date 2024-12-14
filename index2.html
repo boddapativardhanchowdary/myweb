@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="image-container">
+        <span style="--i: 1">
+            <img src="1.jpg">
+        </span>
+        <span style="--i: 2">
+            <img src="2.jpg">
+        </span>
+        <span style="--i: 3">
+            <img src="3.jpg">  
+        </span>
+        <span style="--i: 4">
+            <img src="4.jpg">
+        </span>
+      </div>
+      <div class="btn-container">
+        <button class="btn" id="prev"><i class="fa-solid fa-rotate-left"></i></button>
+        <button class="btn" id="next"><i class="fa-solid fa-rotate-right"></i></button>
+      </div>
+</body>
+<style>
+    /* author:  https://codepen.io/raulperez0481/pen/yLWLePm
+Raúl Pérez Caballero*/
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    height: 100vh;
+    justify-content: center;
+    background-color: black;
+    overflow: hidden;
+}
+
+.image-container {
+    width: 200px;
+    height: 200px;
+    transform-style: preserve-3d;
+    transform: perspective(1000px) rotateY(0deg);
+    transition: transform .7s;
+}
+
+.image-container span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    transform: rotateY(calc(var(--i) * 90deg)) translateZ(400px);
+}
+
+.image-container span img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  aspect-ratio: 1/1;
+  -o-object-fit: cover;
+     object-fit: cover;
+  filter: grayscale(100%);
+
+}
+
+.btn-container {
+    position: relative;
+    width: 80%;
+}
+
+.btn {
+  position: absolute;
+  bottom: -140px;
+  background-color: slateblue;
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.btn:hover {
+    filter: brightness(1.5);
+}
+
+.image-container span img:hover {
+  filter: none;
+}
+
+#prev {
+    left: 20%;
+}
+
+#next {
+    right: 20%;
+}
+</style>
+<script>
+    //basado en la Rotating Image Gallery de @masterneme https://codepen.io/masterneme/pen/bGzeOKX
+
+const imageContainerEl = document.querySelector(".image-container");
+const prevEl = document.getElementById("prev");
+const nextEl = document.getElementById("next");
+
+let x = 0;
+let timer;
+
+prevEl.addEventListener("click", () => {
+    x += 90;
+    clearTimeout(timer);
+    updateGallery();
+});
+
+nextEl.addEventListener("click", () => {
+    x -= 90;
+    clearTimeout(timer);
+    updateGallery();
+});
+
+function updateGallery() {
+    imageContainerEl.style.transform = `perspective(1000px) rotateY(${x}deg)`;
+    timer = setTimeout( () => {
+        x -= 90;
+        updateGallery();
+    }, 3000)
+}
+
+updateGallery();
+</script>
+</html>
